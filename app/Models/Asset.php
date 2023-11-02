@@ -13,11 +13,8 @@ class Asset extends Model
     protected $table = 'assets';
     protected $fillable = [
         'name',
-        'asset_type_id',
         'description',
         'status',
-        'images',
-        'contract_id',
     ];
     public $timestamps = true;
 

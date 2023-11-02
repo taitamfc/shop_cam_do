@@ -113,7 +113,7 @@
                                     <label class="form-label">Ghi chú</label>
                                     <textarea name="note" class="form-control" placeholder="Ghi chú" ></textarea>
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Ảnh đính kèm</label>
-                                        <input type="file" name="images[]" multiple class="form-control">
+                                        <input type="file" name="image" multiple class="form-control">
                                 </div>
                             </div>
                         </div>

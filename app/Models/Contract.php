@@ -14,12 +14,6 @@ class Contract extends Model
 
     protected $fillable = [
         'customer_id',
-        'customer_phone',
-        'customer_name',
-        'customer_identi',
-        'customer_birthday',
-        'customer_image',
-        'contract_type_id',
         'asset_id',
         'total_loan',
         'interest_payment_period',

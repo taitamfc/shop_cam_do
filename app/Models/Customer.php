@@ -19,6 +19,7 @@ class Customer extends Model
         'id_image_front',
         'id_image_back',
         'image_user',
+        'cmnd',
         'status',
     ];
     public $timestamps = true;

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Fund;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,17 +14,14 @@ class FundSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('funds')->insert([
-            [
-                'name' => 'Quỹ số 1',
-                'status' => 1,
-                'amount' => 1000000
-            ],
-            [
-                'name' => 'Quỹ số 2',
-                'status' => 1,
-                'amount' => 50000000
-            ],
-        ]);
+        $data = [
+            'name' => 'Quỹ số 1',
+            'status' => Fund::ACTION,
+            'amount' => Fund::DEFAULT_FUND
+        ];
+        $isExist = Fund::where('name', $data['name'])->exists();
+        if (!$isExist) {
+            Fund::insert($data);
+        }
     }
 }

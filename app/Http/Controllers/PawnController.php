@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\LoanType;
+use App\Enums\StatusLoan;
 use App\Models\Customer;
 use App\Models\AssetType;
 use App\Models\Asset;
@@ -9,6 +11,7 @@ use App\Models\Contract;
 use App\Models\Log as SystemLog;
 use App\Http\Requests\StoreContractRequest;
 use App\Http\Requests\UpdateContractRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -72,44 +75,54 @@ class PawnController extends Controller
      */
     public function store(StoreContractRequest $request)
     {
-        $item = new Contract();
-        $item->customer_id = 1;
-        $item->contract_type_id = Contract::TRAGOP;
-        $item->customer_phone = $request->customer_phone;
-        $item->customer_name = $request->customer_name;
-        $item->customer_identi = $request->customer_identi;
-        $item->customer_birthday = $request->customer_birthday;
-        if ($request->hasFile('customer_image')) {
-            $item->customer_image = $this->uploadFile($request->file('customer_image'), 'uploads');
-        }
-        $item->user_id = Auth::id();
-        $item->total_loan = $request->total_loan;
-        $item->interest_payment_period = $request->interest_payment_period;
-        $item->interest_rate = $request->interest_rate;
-        $item->date_paid = $request->date_paid;
-        $item->note = $request->note;
-        $item->status = 'Đang vay';
 
-        
-        
         try {
+            DB::beginTransaction();
 
-            // Xử lý thêm khách hàng
-            if (!$request->customer_id) {
-                $customer = new Customer();
-                $customer->name = $request->customer_name;
-                $customer->phone = $request->customer_phone;
-                $customer->save();
+            $customer = new Customer();
+            $customer->name = $request->customer_name;
+            $customer->phone = $request->phone;
+            $customer->identification = $request->identification;
+            $customer->address = $request->address;
+            $customer->birthday = $request->birthday;
+            $customer->phone = $request->customer_phone;
 
-                $request->customer_id = $customer->id;
+            if ($request->hasFile('identification')) {
+                $customer->customer_image = $this->uploadFile($request->file('identification'), 'uploads');
             }
-            $item->customer_id = $request->customer_id;
-            $item->save();
+            if ($request->hasFile('identification')) {
+                $customer->customer_image = $this->uploadFile($request->file('identification'), 'uploads');
+            }
+            if ($request->hasFile('identification')) {
+                $customer->customer_image = $this->uploadFile($request->file('identification'), 'uploads');
+            }
+            if ($request->hasFile('identification')) {
+                $customer->customer_image = $this->uploadFile($request->file('identification'), 'uploads');
+            }
+            $customer->save();
 
+            if ($customer->id) {
+                $item = new Contract();
+                $item->customer_id = $customer->id;
+                $item->contract_type_id = LoanType::INSTALLMENT;
+                $item->asset_id = $request->asset_id;
+                $item->interest_payment_period = $request->interest_payment_period;
+                $item->interest_rate = $request->interest_rate;
+                $item->date_paid = $request->date_paid;
+                $item->note = $request->note;
+                $item->status = StatusLoan::PENDING;
 
+                if ($request->hasFile('image')) {
+                    $item->customer_image = $this->uploadFile($request->file('customer_image'), 'uploads');
+                }
+
+                $item->save();
+            }
+            DB::commit();
             SystemLog::addLog('Contract', 'store', $item->id);
             return redirect()->route('contracts.index')->with('success', __('sys.store_item_success'));
         } catch (QueryException $e) {
+            DB::rollback();
             Log::error($e->getMessage());
             return redirect()->route('contracts.index')->with('error', __('sys.store_item_error'));
         }
@@ -178,7 +191,7 @@ class PawnController extends Controller
         } else {
             $item->status = 'dang_vay';
         }
-        
+
         try {
 
             // Xử lý thêm khách hàng
@@ -193,7 +206,7 @@ class PawnController extends Controller
 
             $item->customer_id = $request->customer_id;
             $item->save();
-            
+
             if ($request->hasFile('images')) {
                 $images = [];
                 foreach ($request->file('images') as $image) {
@@ -201,7 +214,7 @@ class PawnController extends Controller
                 }
                 $item->image = json_encode($images);
             }
-        
+
             SystemLog::addLog('Contract', 'store', $item->id);
             return redirect()->route('contracts.index')->with('success', __('sys.update_item_success'));
         } catch (QueryException $e) {

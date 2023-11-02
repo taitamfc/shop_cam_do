@@ -14,14 +14,7 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers');
-            $table->string('customer_name')->nullable();
-            $table->string('customer_identi')->nullable();
-            $table->string('customer_birthday')->nullable();
-            $table->string('customer_image')->nullable();
-            $table->string('contract_type_id')->default(0);
             $table->unsignedBigInteger('asset_id');
-            $table->foreign('asset_id')->references('id')->on('assets');
             $table->string('total_loan')->nullable();
             $table->string('interest_payment_period')->nullable();
             $table->string('interest_rate')->nullable();
@@ -29,7 +22,8 @@ return new class extends Migration
             $table->string('note')->nullable();
             $table->string('image')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('status')->default('0')->comment('0:pending, 1:approved 2:paid');
+            $table->string('type')->default('0')->comment('0:cam do, 1:tra gop');
             $table->timestamps();
         });
     }

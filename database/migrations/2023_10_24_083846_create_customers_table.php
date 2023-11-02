@@ -18,11 +18,13 @@ return new class extends Migration
             $table->integer('phone');
             $table->string('address')->nullable();
             $table->date('birthday')->nullable();
+            $table->string('cmnd');
             $table->string('identification')->nullable();
             $table->string('id_image_front')->nullable();
             $table->string('id_image_back')->nullable();
             $table->string('image_user')->nullable();
             $table->string('status')->nullable();
+            $table->string('sitiuation');
             $table->timestamps();
         });
     }
