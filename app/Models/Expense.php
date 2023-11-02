@@ -77,7 +77,4 @@ class Expense extends Model
                 break;
         }
     }
-
-    
-    
 }
