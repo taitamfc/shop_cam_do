@@ -79,7 +79,7 @@
             <div class="text-truncate">Quản lý quỹ</div>
         </a>
     </li>
-    <li class="menu-item">
+    <li class="menu-item <?= Request::is('expenses*') ? 'active' : '' ?>">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-money"></i>
             <div class="text-truncate">Quản lý thu chi</div>
@@ -93,7 +93,7 @@
             </li>
         </ul>
     </li>
-    <li class="menu-item">
+    <li class="menu-item <?= Request::is('statistical*') ? 'active' : '' ?>">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-bar-chart"></i>
             <div class="text-truncate">Thống kê</div>
@@ -101,8 +101,13 @@
 
         <ul class="menu-sub">
             <li class="menu-item">
-                <a href="javascript:void(0);" class="menu-link">
-                    <div class="text-truncate">Thống kê</div>
+                <a href="{{ route('statistical.collect') }}" class="menu-link">
+                    <div class="text-truncate">Thống kê Thu</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{{ route('statistical.spend') }}" class="menu-link">
+                    <div class="text-truncate">Thống kê Chi</div>
                 </a>
             </li>
         </ul>
@@ -112,14 +117,6 @@
             <i class="menu-icon tf-icons bx bx-cog"></i>
             <div class="text-truncate">Hệ thống</div>
         </a>
-
-        <ul class="menu-sub">
-            <li class="menu-item">
-                <a href="javascript:void(0);" class="menu-link">
-                    <div class="text-truncate">Cài đặt</div>
-                </a>
-            </li>
-        </ul>
         <ul class="menu-sub">
             <li class="menu-item">
                 <a href="{{route('logs.index')}}" class="menu-link">
