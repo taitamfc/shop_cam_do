@@ -31,8 +31,7 @@ class ContractController extends Controller
             $query->where('status', 'LIKE', "%$request->status_name%");
         }
         if ($request->name_phone) {
-            $query->where('customer_name', 'LIKE', "%$request->name_phone%")
-                ->orWhere('customer_phone', 'LIKE', "%$request->name_phone%");
+            $query->where('customer_name', 'LIKE', "%$request->name_phone%");
         }
         if ($request->time && in_array($request->time, ['tat_ca', 'tuan_nay', 'thang_nay', 'nam_nay'])) {
             $dateRanges = [
@@ -76,10 +75,6 @@ class ContractController extends Controller
         $item = new Contract();
         $item->customer_id = 1;
         $item->contract_type_id = Contract::CAMDO;
-        $item->customer_phone = $request->customer_phone;
-        $item->customer_name = $request->customer_name;
-        $item->customer_identi = $request->customer_identi;
-        $item->customer_birthday = $request->customer_birthday;
         if ($request->hasFile('customer_image')) {
             $item->customer_image = $this->uploadFile($request->file('customer_image'), 'uploads');
         }
@@ -91,26 +86,24 @@ class ContractController extends Controller
         $item->note = $request->note;
         $item->status = 'Đang vay';
 
-        
-        
+
+
         try {
 
             // Xử lý thêm khách hàng
             if (!$request->customer_id) {
                 $customer = new Customer();
-                $customer->name = $request->customer_name;
-                $customer->phone = $request->customer_phone;
                 $customer->save();
 
                 $request->customer_id = $customer->id;
             }
             $item->customer_id = $request->customer_id;
-            
+
             // thêm các kỳ đóng lãi
             if ($item->save()) {
                 $timestamp_date_paid = strtotime($request->date_paid);
                 $amount_payment = ceil(($request->total_loan + $request->interest_rate) / $request->interest_payment_period);
-                for ($i = 1; $i <= $request->interest_payment_period; $i++) { 
+                for ($i = 1; $i <= $request->interest_payment_period; $i++) {
                     $item_payment = new Payments();
                     $item_payment->date_paid = date('Y-m-d', ($timestamp_date_paid + ($i * $request->interest_payment_period * 24 * 60 * 60)));
                     $item_payment->amount = $amount_payment;
@@ -193,10 +186,6 @@ class ContractController extends Controller
         $item = Contract::findOrFail($id);
         $item->customer_id = 1;
         $item->contract_type_id = Contract::CAMDO;
-        $item->customer_phone = $request->customer_phone;
-        $item->customer_name = $request->customer_name;
-        $item->customer_identi = $request->customer_identi;
-        $item->customer_birthday = $request->customer_birthday;
         if ($request->hasFile('customer_image')) {
             $item->customer_image = $this->uploadFile($request->file('customer_image'), 'uploads');
         }
@@ -211,14 +200,12 @@ class ContractController extends Controller
         } else {
             $item->status = 'dang_vay';
         }
-        
+
         try {
 
             // Xử lý thêm khách hàng
             if (!$request->customer_id) {
                 $customer = new Customer();
-                $customer->name = $request->customer_name;
-                $customer->phone = $request->customer_phone;
                 $customer->save();
 
                 $request->customer_id = $customer->id;
@@ -239,7 +226,7 @@ class ContractController extends Controller
             $asset->description = $request->asset_password;
             $asset->description .= '|'.$request->asset_number;
             $asset->description .= '|'.$request->asset_note;
-            
+
             if ($request->hasFile('images')) {
                 $images = [];
                 foreach ($request->file('images') as $image) {
@@ -247,7 +234,7 @@ class ContractController extends Controller
                 }
                 $item->image = json_encode($images);
             }
-        
+
             $asset->save();
 
 
@@ -279,8 +266,7 @@ class ContractController extends Controller
         $query->orderBy('id', 'DESC');
         $limit = $request->limit ? $request->limit : 10;
         if ($request->name_phone) {
-            $query->where('customer_name', 'LIKE', "%$request->name_phone%")
-                ->orWhere('customer_phone', 'LIKE', "%$request->name_phone%");
+            $query->where('customer_name', 'LIKE', "%$request->name_phone%");
         }
         if ($request->time && in_array($request->time, ['tat_ca', 'tuan_nay', 'thang_nay', 'nam_nay'])) {
             $dateRanges = [

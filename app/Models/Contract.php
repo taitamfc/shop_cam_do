@@ -22,6 +22,9 @@ class Contract extends Model
         'note',
         'image',
         'user_id',
+        'total_interest',
+        'monthly_revenue',
+        'time_loan',
     ];
 
     public $timestamps = true;

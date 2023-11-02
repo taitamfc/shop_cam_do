@@ -84,30 +84,66 @@
                         </div>
                         <div class="card-body">
                             <div class="row mb-3">
-                                <div class="col"><label class="form-label">Tổng tiền vay</label>
+                                <div class="col-3"><label class="form-label">Tổng tiền vay</label>
                                     <input type="text" class="form-control" placeholder="Tổng tiền vay" name="total_loan" value="{{ old('total_loan') }}">
                                     @error('total_loan')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="col-3"><label class="form-label">Lãi tổng</label>
+                                    <input type="text" class="form-control" placeholder="Tổng tiền vay" name="interest_rate" value="{{ old('interest_rate') }}">
+                                    @error('interest_rate')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col"><label class="form-label">Tài sản</label>
+                                    <select id="ProductStatus" class="form-select text-capitalize" name="asset_id">
+                                        @if(!empty($assets))
+                                        @foreach($assets as $asset)
+                                        <option value="{{ $asset->id }}">{{ $asset->name }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
 
                             </div>
                             <div class="row mb-3">
-                                <div class="col"><label class="form-label">Lãi tổng</label>
-                                    <input type="text" class="form-control" placeholder="Lãi tổng" name="interest_rate" value="{{ old('interest_rate') }}">
-                                    @error('interest_rate')
+                                <div class="col-3"><label class="form-label">Bốc trong vòng/ngày</label>
+                                    <input type="text" class="form-control" placeholder="" name="time_loan" value="{{ old('time_loan') }}">
+                                    @error('time_loan')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
+                                </div>
+                                <div class="col-3"><label class="form-label">Kỳ góp</label>
+                                    <input type="text" class="form-control" placeholder="Lãi tổng" name="interest_payment_period" value="{{ old('interest_payment_period') }}">
+                                    @error('interest_payment_period')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col"><label  class="form-label">Quỹ</label>
+                                    <select class="form-select text-capitalize" name="fund_id">
+                                        @if(!empty($funds))
+                                        @foreach($funds as $fund)
+                                        <option value="{{ $fund->name }}" >{{ $fund->name }}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label class="form-label">Tiền thu hàng kỳ</label>
+                                    <input type="text" class="form-control" placeholder="" name="monthly_revenue">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Ảnh đính kèm</label>
+                                    <input type="file" name="image" class="form-control">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col">
                                     <label class="form-label">Ghi chú</label>
                                     <textarea name="note" class="form-control" placeholder="Ghi chú" ></textarea>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Ảnh đính kèm</label>
-                                    <input type="file" name="image" class="form-control">
                                 </div>
                             </div>
                         </div>

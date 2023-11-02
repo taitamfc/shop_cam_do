@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\AssetType;
 use App\Models\Asset;
 use App\Models\Contract;
+use App\Models\Fund;
 use App\Models\Log as SystemLog;
 use App\Http\Requests\StoreContractRequest;
 use App\Http\Requests\UpdateContractRequest;
@@ -32,10 +33,7 @@ class PawnController extends Controller
         if ( $request->status_name) {
             $query->where('status', 'LIKE', "%$request->status_name%");
         }
-        if ($request->name_phone) {
-            $query->where('customer_name', 'LIKE', "%$request->name_phone%")
-                ->orWhere('customer_phone', 'LIKE', "%$request->name_phone%");
-        }
+
         if ($request->time && in_array($request->time, ['tat_ca', 'tuan_nay', 'thang_nay', 'nam_nay'])) {
             $dateRanges = [
                 'tat_ca' => [null, null],
@@ -57,17 +55,15 @@ class PawnController extends Controller
     }
     public function create()
     {
-        $assets = AssetType::get();
-        $customers = Customer::get();
-        $params = [
+        $assets = Asset::all();
+        $funds = Fund::all();
+
+        $param = [
             'assets' => $assets,
-            'customers' => $customers,
-            'type' => [
-                    0 => 'Cầm đồ',
-                    1 => 'Trả góp'
-            ],
+            'funds' => $funds
         ];
-        return view("admin.pawns.create", $params);
+
+        return view("admin.pawns.create", $param);
     }
 
     /**
@@ -75,29 +71,36 @@ class PawnController extends Controller
      */
     public function store(StoreContractRequest $request)
     {
-
+        dd($request->all());
         try {
             DB::beginTransaction();
 
             $customer = new Customer();
+
+            $isExitsCustomer = Customer::where('cmnd', $request->cmnd)->exists();
+
+            if ($isExitsCustomer) {
+                return redirect()->back()->with('error', 'Tên khách hàng đã tồn tại');
+            }
+
             $customer->name = $request->customer_name;
             $customer->phone = $request->phone;
             $customer->identification = $request->identification;
             $customer->address = $request->address;
             $customer->birthday = $request->birthday;
-            $customer->phone = $request->customer_phone;
+            $customer->cmnd = $request->cmnd;
 
             if ($request->hasFile('identification')) {
-                $customer->customer_image = $this->uploadFile($request->file('identification'), 'uploads');
+                $customer->identification = $this->uploadFile($request->file('identification'), 'uploads');
             }
-            if ($request->hasFile('identification')) {
-                $customer->customer_image = $this->uploadFile($request->file('identification'), 'uploads');
+            if ($request->hasFile('id_image_front')) {
+                $customer->id_image_front = $this->uploadFile($request->file('id_image_front'), 'uploads');
             }
-            if ($request->hasFile('identification')) {
-                $customer->customer_image = $this->uploadFile($request->file('identification'), 'uploads');
+            if ($request->hasFile('id_image_back')) {
+                $customer->id_image_back = $this->uploadFile($request->file('id_image_back'), 'uploads');
             }
-            if ($request->hasFile('identification')) {
-                $customer->customer_image = $this->uploadFile($request->file('identification'), 'uploads');
+            if ($request->hasFile('image_user')) {
+                $customer->image_user = $this->uploadFile($request->file('image_user'), 'uploads');
             }
             $customer->save();
 
@@ -108,6 +111,9 @@ class PawnController extends Controller
                 $item->asset_id = $request->asset_id;
                 $item->interest_payment_period = $request->interest_payment_period;
                 $item->interest_rate = $request->interest_rate;
+                $item->total_interest = $request->total_interest;
+                $item->monthly_revenue = $request->monthly_revenue;
+                $item->time_loan = $request->time_loan;
                 $item->date_paid = $request->date_paid;
                 $item->note = $request->note;
                 $item->status = StatusLoan::PENDING;
@@ -120,11 +126,11 @@ class PawnController extends Controller
             }
             DB::commit();
             SystemLog::addLog('Contract', 'store', $item->id);
-            return redirect()->route('contracts.index')->with('success', __('sys.store_item_success'));
+            return redirect()->back()->with('success', __('sys.store_item_success'));
         } catch (QueryException $e) {
             DB::rollback();
             Log::error($e->getMessage());
-            return redirect()->route('contracts.index')->with('error', __('sys.store_item_error'));
+            return redirect()->back()->with('error', __('sys.store_item_error'));
         }
     }
 
@@ -134,10 +140,8 @@ class PawnController extends Controller
     public function show($id)
     {
         try {
-            $assets = AssetType::get();
             $item = Contract::findOrFail($id);
             $params = [
-                'assets' => $assets,
                 'item' => $item,
                 'success' => __('sys.store_item_success'),
                 'type' => [
@@ -173,10 +177,6 @@ class PawnController extends Controller
         $item = Contract::findOrFail($id);
         $item->customer_id = 1;
         $item->contract_type_id = Contract::TRAGOP;
-        $item->customer_phone = $request->customer_phone;
-        $item->customer_name = $request->customer_name;
-        $item->customer_identi = $request->customer_identi;
-        $item->customer_birthday = $request->customer_birthday;
         if ($request->hasFile('customer_image')) {
             $item->customer_image = $this->uploadFile($request->file('customer_image'), 'uploads');
         }
@@ -197,8 +197,6 @@ class PawnController extends Controller
             // Xử lý thêm khách hàng
             if (!$request->customer_id) {
                 $customer = new Customer();
-                $customer->name = $request->customer_name;
-                $customer->phone = $request->customer_phone;
                 $customer->save();
 
                 $request->customer_id = $customer->id;
@@ -243,8 +241,7 @@ class PawnController extends Controller
         $query->orderBy('id', 'DESC');
         $limit = $request->limit ? $request->limit : 10;
         if ($request->name_phone) {
-            $query->where('customer_name', 'LIKE', "%$request->name_phone%")
-                ->orWhere('customer_phone', 'LIKE', "%$request->name_phone%");
+            $query->where('customer_name', 'LIKE', "%$request->name_phone%");
         }
         if ($request->time && in_array($request->time, ['tat_ca', 'tuan_nay', 'thang_nay', 'nam_nay'])) {
             $dateRanges = [
