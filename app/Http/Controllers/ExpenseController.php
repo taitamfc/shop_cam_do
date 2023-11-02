@@ -31,12 +31,9 @@ class ExpenseController extends Controller
         $query->orderBy('id', 'DESC');
         $items = $query->paginate($limit);
 
-        $contracts = Contract::all();
         $params = [
-            'items' => $items,
-            'contracts' => $contracts,
+            'items' => $items
         ];
-        // dd($params);
         return view("admin.expenses.index", $params);
     }
 }
