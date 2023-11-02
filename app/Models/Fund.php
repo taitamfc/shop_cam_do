@@ -15,6 +15,7 @@ class Fund extends Model
         'amount',
     ];
 
-    const _SHOW = 0;
-    const _HIDE = 1;
+    const ACTION = 0;
+    const PENDING = 1;
+    const DEFAULT_FUND = 500000000;
 }

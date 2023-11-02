@@ -50,14 +50,29 @@
                                 @enderror
                                 </div>
                                 <div class="col"><label class="form-label">Số CCCD</label>
-                                    <input type="text" class="form-control" placeholder="Số CCCD" name="customer_identi" value="{{ old('customer_identi') }}">
-                                    @error('customer_identi')
+                                    <input type="text" class="form-control" placeholder="Số CCCD" name="cmnd" value="{{ old('cmnd') }}">
+                                    @error('cmnd')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                                 </div>
                             </div>
-                            <div class="mb-3"><label class="form-label">Ảnh </label>
-                                <input type="file" name="customer_image" class="form-control">
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label">ẢNH CCCD </label>
+                                    <input type="file" name="identification" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">ẢNH MẶT TRƯỚC </label>
+                                    <input type="file" name="id_image_front" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">ẢNH MẶT SAU</label>
+                                    <input type="file" name="id_image_back" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">ẢNH CHÂN DUNG</label>
+                                    <input type="file" name="image_user" class="form-control">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -75,7 +90,7 @@
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                
+
                             </div>
                             <div class="row mb-3">
                                 <div class="col"><label class="form-label">Lãi tổng</label>
@@ -90,12 +105,15 @@
                                     <label class="form-label">Ghi chú</label>
                                     <textarea name="note" class="form-control" placeholder="Ghi chú" ></textarea>
                                 </div>
-                               
+                                <div class="col-md-6">
+                                    <label class="form-label">Ảnh đính kèm</label>
+                                    <input type="file" name="image" class="form-control">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                   
+
                 </div>
             </div>
         </div>

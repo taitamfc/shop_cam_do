@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReceivableDebtController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,4 +40,10 @@ Route::middleware('auth')->group(function () {
 
     // funds
     Route::get('funds', [\App\Http\Controllers\FundController::class, 'index'])->name('funds.index');
+
+    //no phai thu
+    Route::controller(ReceivableDebtController::class)->group(function () {
+        Route::get('receivable-debt/index', 'index')->name('receivable-debt.index');
+
+    });
 });

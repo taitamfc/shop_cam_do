@@ -16,11 +16,10 @@ return new class extends Migration
             $table->date('date_paid');
             $table->integer('amount')->default(0);
             $table->integer('other_fee')->default(0);
-            $table->string('customer_name')->nullable();
+            $table->string('customer_id')->nullable();
             $table->unsignedBigInteger('contract_id');
-            $table->foreign('contract_id')->references('id')->on('contracts');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('status')->default('0')->comment('0: chưa trả, 1: đã trả, 2: quá hạn');
             $table->timestamps();
         });
     }

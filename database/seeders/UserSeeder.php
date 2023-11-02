@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleUser;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,15 +16,16 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            [
-                'name' => 'Admin',
-                'email' => 'admin@gmail.com',
-                'phone' => '0123456789',
-                'password' => Hash::make('123456'),
-                'address' => 'Cam Lộ',
-                'group_id' => 1
-            ],
-        ]);
+        $data = [
+            'name' => 'admin',
+            'email' => 'admin@h89.com',
+            'password' => bcrypt('admin@h892023'),
+            'role_id' => RoleUser::ADMIN
+        ];
+
+        $isExist = User::where('email', $data['email'])->exists();
+        if (!$isExist) {
+            User::insert($data);
+        }
     }
 }

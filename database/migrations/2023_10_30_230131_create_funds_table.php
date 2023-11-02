@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('funds', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('status')->default(0);
-            $table->string('amount')->default(5000000);
+            $table->string('status')->default(0)->comment('0:active, 1:pending');
+            $table->string('amount');
             $table->timestamps();
         });
     }

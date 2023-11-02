@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('type')->nullable();
             $table->unsignedBigInteger('contract_id');
-            $table->foreign('contract_id')->references('id')->on('contracts');
             $table->string('amount')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();
