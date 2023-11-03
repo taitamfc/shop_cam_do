@@ -23,8 +23,8 @@ class Payments extends Model
     ];
     public $timestamps = true;
 
-    public function contact() {
-        return $this->belongsTo(Asset::class,'contact_id','id');
+    public function contract() {
+        return $this->belongsTo(Contract::class,'contract_id','id');
     }
 
 }

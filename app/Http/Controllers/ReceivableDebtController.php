@@ -30,7 +30,7 @@ class ReceivableDebtController extends Controller
         $status = StatusDebt::asSelectArray();
         $today = Carbon::now();
 
-        $geReceivables = Payments::with(['contact'])
+        $geReceivables = Payments::with(['contract'])
                         ->whereIn('status', [PaymentType::UNPAID, PaymentType::OVERDUE])
                         ->where('date_paid', '<=', $today)
                         ->get();
