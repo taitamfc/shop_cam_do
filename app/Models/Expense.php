@@ -16,6 +16,8 @@ class Expense extends Model
     const THU_NHAN_VAY = 4;
     const CHI_PHI_KHAC = 24;
     const THANH_LY_TAI_SAN = 16;
+    const THU = 'thu';
+    const CHI = 'chi';
 
     protected $fillable = [
         'type',
