@@ -2,7 +2,6 @@
     <div class="card-header d-flex align-items-center justify-content-between pb-0">
         <div class="card-title mb-0">
             <h5 class="m-0 me-2">Khách Hàng</h5>
-            <small class="text-muted">{{ $total_khach_hang }}</small>
         </div>
         <div class="dropdown">
             <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -18,8 +17,8 @@
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3" style="position: relative;">
             <div class="d-flex flex-column align-items-center gap-1">
-                <h2 class="mb-2">8,258</h2>
-                <span>Total Orders</span>
+                <h2 class="mb-2">{{ $total_khach_hang }}</h2>
+                <span>Khách Hàng</span>
             </div>
             <div id="orderStatisticsChart" style="min-height: 137.55px;">
                 <div id="apexcharts028uxtk9h" class="apexcharts-canvas apexcharts028uxtk9h apexcharts-theme-light" style="width: 130px; height: 137.55px;"><svg id="SvgjsSvg2944" width="130" height="137.55" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;">
