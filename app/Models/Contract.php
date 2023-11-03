@@ -35,4 +35,45 @@ class Contract extends Model
     public function asset() {
         return $this->hasOne(Asset::class,'contract_id','id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+    // Attributes
+    public function getUserNameAttribute(){
+        return $this->user_id && !empty($this->user) ? $this->user->name : '';
+    }
+    public function getCustomerNameAttribute(){
+        return $this->customer_id && !empty($this->customer) ? $this->customer->name : '';
+    }
+    public function getCreatedAtFmAttribute(){
+        return $this->created_at ? date('d/m/Y H:i',strtotime($this->created_at)) : '';
+    }
+    
+    public function getTotalLoanFmAttribute(){
+        return $this->total_loan ? number_format($this->total_loan) : 0;
+    }
+    public function getStatusHtmlAttribute(){
+        switch ($this->status) {
+            case 0:
+                return '<span class="badge bg-label-primary"> Chờ xử lý </span>';
+                # code...
+                break;
+            case 1:
+                return '<span class="badge bg-label-info"> Đã chấp nhận </span>';
+                # code...
+                break;
+            case 2:
+                return '<span class="badge bg-label-success"> Đã hoàn thành </span>';
+                # code...
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
 }
