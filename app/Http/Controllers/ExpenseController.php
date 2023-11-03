@@ -19,8 +19,8 @@ class ExpenseController extends Controller
                 $subQuery->orWhere('name','LIKE',"%$customer_name%");
             });
         }
-        if ($request->type_id) {
-            $query->where('type_id',$request->type_id);
+        if ($request->type) {
+            $query->where('type',$request->type);
         }
         if ($request->contract_id) {
             $query->where('contract_id',$request->contract_id);

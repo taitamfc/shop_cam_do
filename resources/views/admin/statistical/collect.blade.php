@@ -49,16 +49,16 @@ use App\Models\Funds;
     <div class="col-sm-6 col-lg-3 mb-4">
         <div class="card card-border-shadow-primary h-100">
             <div class="card-body">
-                <span class="d-block mb-1">TỔNG THU GỐC</span>
-                <h3 class="card-title text-nowrap mb-2"><?= number_format($thu_goc);?> VND</h3>
+                <span class="d-block mb-1">TỔNG THU</span>
+                <h3 class="card-title text-nowrap mb-2"><?= number_format($tong_thu);?> VND</h3>
             </div>
         </div>
     </div>
     <div class="col-sm-6 col-lg-3 mb-4">
         <div class="card card-border-shadow-warning h-100">
             <div class="card-body">
-                <span class="d-block mb-1">TỔNG THU LÃI</span>
-                <h3 class="card-title text-nowrap mb-2"><?= number_format($thu_lai);?></h3>
+                <span class="d-block mb-1">-</span>
+                <h3 class="card-title text-nowrap mb-2">-</h3>
             </div>
         </div>
     </div>

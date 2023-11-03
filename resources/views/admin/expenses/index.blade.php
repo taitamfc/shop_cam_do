@@ -23,25 +23,11 @@
                         placeholder="Đến ngày">
                 </div>
                 <div class="col">
-                    <label class="form-label">Loại hợp đồng</label>
-                    <select id="limit" name="contract_type_id" class="form-select">
-                        <option value="">Tất cả</option>
-                        <option @selected( request()->contract_type_id == \App\Models\Contract::CAMDO ) value="{{ \App\Models\Contract::CAMDO }}">Cầm đồ</option>
-                        <option @selected( request()->contract_type_id == \App\Models\Contract::TRAGOP ) value="{{ \App\Models\Contract::TRAGOP }}">Trả góp</option>
-                    </select>
-                </div>
-                <div class="col">
                     <label class="form-label">Loại thu/chi</label>
-                    <select id="limit" name="type_id" class="form-select">
+                    <select id="limit" name="type" class="form-select">
                         <option value="">Tất cả</option>
-                        <option @selected( request()->type_id == \App\Models\Expense::KY_LAI )  value="{{ \App\Models\Expense::KY_LAI }}">Kỳ lãi</option>
-                        <option @selected( request()->type_id == \App\Models\Expense::TAT_TOAN )  value="{{ \App\Models\Expense::TAT_TOAN }}">Tất toán</option>
-                        <option @selected( request()->type_id == \App\Models\Expense::TRA_BOT_GOC )  value="{{ \App\Models\Expense::TRA_BOT_GOC }}">Trả bớt gốc</option>
-                        <option @selected( request()->type_id == \App\Models\Expense::VAY_THEM )  value="{{ \App\Models\Expense::VAY_THEM }}">Vay thêm</option>
-                        <option @selected( request()->type_id == \App\Models\Expense::CHI_CHO_VAY )  value="{{ \App\Models\Expense::CHI_CHO_VAY }}">Chi cho vay</option>
-                        <option @selected( request()->type_id == \App\Models\Expense::THU_NHAN_VAY )  value="{{ \App\Models\Expense::THU_NHAN_VAY }}">Thu nhận vay</option>
-                        <option @selected( request()->type_id == \App\Models\Expense::CHI_PHI_KHAC )  value="{{ \App\Models\Expense::CHI_PHI_KHAC }}">Thu phí khác</option>
-                        <option @selected( request()->type_id == \App\Models\Expense::THANH_LY_TAI_SAN )  value="{{ \App\Models\Expense::THANH_LY_TAI_SAN }}">Thanh lý tài sản</option>
+                        <option @selected( request()->type == \App\Models\Expense::THU )  value="{{ \App\Models\Expense::THU }}">Thu</option>
+                        <option @selected( request()->type == \App\Models\Expense::CHI )  value="{{ \App\Models\Expense::CHI }}">Chi</option>
                     </select>
                 </div>
             </div>
