@@ -57,9 +57,9 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <label class="form-label">ẢNH CCCD </label>
-                                    <input type="file" name="identification" class="form-control">
+                            <div class="col-md-3">
+                                    <label class="form-label">ẢNH CHÂN DUNG</label>
+                                    <input type="file" name="image_user" class="form-control">
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">ẢNH MẶT TRƯỚC </label>
@@ -70,8 +70,8 @@
                                     <input type="file" name="id_image_back" class="form-control">
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="form-label">ẢNH CHÂN DUNG</label>
-                                    <input type="file" name="image_user" class="form-control">
+                                    <label class="form-label">LINK FACEBOOK</label>
+                                    <input type="text" name="link_fb" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -90,13 +90,13 @@
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-3"><label class="form-label">Lãi tổng</label>
-                                    <input type="text" class="form-control" id="interest_rate" placeholder="Tổng tiền vay" name="interest_rate" value="{{ old('interest_rate') }}">
+                                <div class="col-3"><label class="form-label">Tiền đưa khách</label>
+                                    <input type="text" class="form-control" id="interest_rate" placeholder="Tiền đưa khách" name="interest_rate" value="{{ old('interest_rate') }}">
                                     @error('interest_rate')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col"><label class="form-label">Tài sản</label>
+                                <div class="col"><label class="form-label">Tài sản thế chấp</label>
                                     <select id="ProductStatus" class="form-select text-capitalize" name="asset_id">
                                         @if(!empty($assets))
                                         @foreach($assets as $asset)
@@ -108,17 +108,21 @@
 
                             </div>
                             <div class="row mb-3">
-                                <div class="col-3"><label class="form-label">Bốc trong vòng/ngày</label>
-                                    <input type="text" class="form-control" id="time_loan" placeholder="" name="time_loan" value="{{ old('time_loan') }}">
+                                <div class="col-2"><label class="form-label">Bốc trong vòng/ngày</label>
+                                    <input type="text" class="form-control" id="time_loan" placeholder="Bốc trong vòng/ngày" name="time_loan" value="{{ old('time_loan') }}">
                                     @error('time_loan')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-3"><label class="form-label">Kỳ góp</label>
-                                    <input type="text" class="form-control" placeholder="Lãi tổng" id="interest_payment_period" name="interest_payment_period" value="{{ old('interest_payment_period') }}">
+                                <div class="col-2"><label class="form-label">Kỳ đóng lãi</label>
+                                    <input type="text" class="form-control" placeholder="Kỳ đóng lãi" id="interest_payment_period" name="interest_payment_period" value="{{ old('interest_payment_period') }}">
                                     @error('interest_payment_period')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
+                                </div>
+                                <div class="col-2">
+                                    <label class="form-label">Tiền thu hàng kỳ</label>
+                                    <input type="text" class="form-control" placeholder="Tiền thu hàng kỳ" name="monthly_revenue" id="monthly_payment" readonly>
                                 </div>
                                 <div class="col"><label  class="form-label">Quỹ</label>
                                     <select class="form-select text-capitalize" name="fund_id">
@@ -130,16 +134,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col">
-                                    <label class="form-label">Tiền thu hàng kỳ</label>
-                                    <input type="text" class="form-control" placeholder="" name="monthly_revenue" id="monthly_payment" readonly>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Ảnh đính kèm</label>
-                                    <input type="file" name="image" class="form-control">
-                                </div>
-                            </div>
+                        
                             <div class="row mb-3">
                                 <div class="col">
                                     <label class="form-label">Ghi chú</label>
@@ -148,7 +143,52 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 card-title">Thông tin tài sản thế chấp </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-3"><label class="form-label">Imei</label>
+                                    <input type="text" class="form-control"  id="imei" placeholder="imei" name="imei" value="{{ old('imei') }}">
+                                    @error('imei')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-3"><label class="form-label">Mật khẩu</label>
+                                    <input type="text" class="form-control" id="password" placeholder="Mật khẩu" name="password" value="{{ old('password') }}">
+                                    @error('password')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col"><label class="form-label">Tài khoản icloud quản lý</label>
+                                    <input type="text" class="form-control" id="icloud" placeholder="Mật khẩu" name="icloud" value="{{ old('icloud') }}">
+                                    @error('password')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
+                            </div>
+                        
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Ảnh Mặt trước điện thoại</label>
+                                    <input type="file" name="phone_front_image" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Ảnh mặt sau điện thoại</label>
+                                    <input type="file" name="phone_back_image" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label class="form-label">Video cài máy</label>
+                                    <input name="video" type="file" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -169,7 +209,7 @@
             var timeLoan = parseFloat($("#time_loan").val()) || 0;
             var interestPaymentPeriod = parseFloat($("#interest_payment_period").val()) || 0;
 
-            var monthlyPayment = (totalLoan + interestRate) / (timeLoan / interestPaymentPeriod) || 0;
+            var monthlyPayment = (totalLoan) / (timeLoan / interestPaymentPeriod) || 0;
 
             $("#monthly_payment").val(monthlyPayment.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
         }

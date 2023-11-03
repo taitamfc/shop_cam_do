@@ -59,9 +59,7 @@ class InstallmentController extends Controller
         try {
             DB::beginTransaction();
             $isExitsCustomer = Customer::where('cmnd', $request->cmnd)->exists();
-            do {
-                $contractCode = Str::random(12);
-            } while (Contract::where('code', $contractCode)->exists());
+            
             if ($isExitsCustomer) {
                 return redirect()->back()->with('error', 'Tên khách hàng đã tồn tại');
             }
@@ -69,10 +67,10 @@ class InstallmentController extends Controller
             $customer = new Customer();
             $customer->name = $request->name;
             $customer->phone = $request->phone;
-            $customer->identification = $request->identification;
             $customer->address = $request->address;
             $customer->birthday = $request->birthday;
             $customer->cmnd = $request->cmnd;
+            $customer->link_fb = $request->link_fb;
 
             if ($request->hasFile('identification')) {
                 $customer->identification = $this->uploadFile($request->file('identification'), 'uploads');
@@ -89,9 +87,13 @@ class InstallmentController extends Controller
 
             if ($customer->save()) {
                 $item = new Contract();
+                $contractCode = 'TRAGOP' . str_pad($item->id, 10, '0', STR_PAD_LEFT);
                 $item->customer_id = $customer->id;
                 $item->code = $contractCode;
+                $item->imei = $request->imei;
                 $item->asset_id = $request->asset_id;
+                $item->password = $request->password;
+                $item->icloud = $request->icloud;
                 $item->fund_id = $request->fund_id;
                 $item->total_loan = $request->total_loan;
                 $item->interest_payment_period = $request->interest_payment_period;
@@ -104,8 +106,12 @@ class InstallmentController extends Controller
                 $item->time_loan = $request->time_loan;
                 $item->status = StatusLoan::PENDING;
 
-                if ($request->hasFile('image')) {
-                    $item->image = $this->uploadFile($request->file('image'), 'uploads');
+            
+                if ($request->hasFile('phone_front_image')) {
+                    $item->phone_front_image = $this->uploadFile($request->file('phone_front_image'), 'uploads');
+                }
+                if ($request->hasFile('phone_back_image')) {
+                    $item->phone_back_image = $this->uploadFile($request->file('phone_back_image'), 'uploads');
                 }
 
                 if ($item->save()) {
@@ -129,7 +135,7 @@ class InstallmentController extends Controller
                 }
             }
             DB::commit();
-            SystemLog::addLog('Contract', 'store', $item->code);
+            SystemLog::addLog('Contract', 'store', $item->id);
             return redirect()->route('installment.index')->with('success', __('sys.store_item_success'));
         } catch (QueryException $e) {
             DB::rollback();
@@ -190,7 +196,6 @@ class InstallmentController extends Controller
 
             $contract->customer->name = $request->name;
             $contract->customer->phone = $request->phone;
-            $contract->customer->identification = $request->identification;
             $contract->customer->address = $request->address;
             $contract->customer->birthday = $request->birthday;
             $contract->customer->cmnd = $request->cmnd;
@@ -220,10 +225,6 @@ class InstallmentController extends Controller
             $contract->monthly_revenue = $request->monthly_revenue;
             $contract->time_loan = $request->time_loan;
 
-                if ($request->hasFile('image')) {
-                    $contract->image = $this->uploadFile($request->file('image'), 'uploads');
-                }
-
                 if ($contract->push()) {
                     $loanStartDate = now(); // Ngày hôm nay
                     $paymentInterval = $contract->interest_payment_period; // Kỳ góp (số ngày giữa mỗi lần trả)
@@ -245,7 +246,7 @@ class InstallmentController extends Controller
                 }
 
             DB::commit();
-            SystemLog::addLog('Contract', 'update', $contract->code);
+            SystemLog::addLog('Contract', 'update', $contract->id);
             return redirect()->route('installment.index')->with('success', __('sys.update_item_success'));
         } catch (QueryException $e) {
             Log::error($e->getMessage());

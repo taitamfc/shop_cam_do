@@ -30,6 +30,12 @@ class Contract extends Model
         'status',
         'time_loan',
         'code',
+        'password',
+        'imei',
+        'icloud',
+        'phone_front_image',
+        'phone_back_image',
+        'video',
 
     ];
 

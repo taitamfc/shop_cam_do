@@ -16,7 +16,7 @@ class Customer extends Model
         'phone',
         'address',
         'date',
-        'identification',
+        'link_fb',
         'id_image_front',
         'id_image_back',
         'image_user',

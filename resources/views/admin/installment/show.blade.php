@@ -136,7 +136,7 @@
                             </div>
                         </div>
                         <div class="card-info">
-                            <h6 class="card-title mb-3">Tiền thu hàng kỳ: {{ number_format($item->monthly_revenue) ?? ''}}</h6>
+                            <h6 class="card-title mb-3">Tiền thu hàng kỳ: {{ $item->monthly_revenue ?? ''}}</h6>
                             <h6 class="card-title mb-3">Kỳ góp: {{ number_format($item->interest_payment_period) ?? ''}}</h6>
                             <h6 class="card-title mb-3">Quỹ: {{$item->fund->name ?? ''}}</h6>
                         </div>
@@ -190,7 +190,7 @@
                         <tr class="odd">
                             <td>{{ $loop->iteration }}</td>
                             <td class="sorting_1">{{$payment->date_paid}}</td>
-                            <td class="sorting_1">{{number_format($payment->amount)}}</td>
+                            <td class="sorting_1">{{$payment->amount ?? ''}}</td>
                             <td><span class="text-nowrap">{{ number_format($payment->paid) ?? ''}}</span></td>
                             <td>
                                 @if($payment->status == 0)

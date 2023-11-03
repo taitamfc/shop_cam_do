@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->date('date_paid');
-            $table->integer('amount')->default(0);
+            $table->string('amount')->default(0);
             $table->integer('other_fee')->default(0);
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('contract_id');
