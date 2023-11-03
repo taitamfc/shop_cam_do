@@ -80,14 +80,15 @@
                 </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-
+                @if($geReceivables)
+                @foreach($geReceivables as $geReceivable)
                 <tr>
-                    <td></td>
+                    <td>{{}}</td>
                     <td>
                         <div class="d-flex">
                             <div class="td-info">
-                                <h6 class="text-body mb-0"></h6>
-                                <small  class="text-muted text-truncate d-none d-sm-block"></small>
+                                <h6 class="text-body mb-0">{{}}</h6>
+
                             </div>
                         </div>
                     </td>
@@ -102,10 +103,11 @@
 
 
                         </div>
-                        </div>
+
                     </td>
                 </tr>
-
+                @endforeach
+                @endif
                 </tbody>
             </table>
         </div>

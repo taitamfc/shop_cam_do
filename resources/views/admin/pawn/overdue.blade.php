@@ -110,7 +110,6 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{ $item->contract_type_id }}</td>
                                 <td>{{ $item->total_loan }}</td>
                                 <td>{{ $item->interest_rate }}</td>
                                 <td>{{ $item->date_paid }}</td>

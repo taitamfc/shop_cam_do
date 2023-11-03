@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReceivableDebtController;
+use App\Http\Controllers\InstallmentController;
+use App\Http\Controllers\PaymentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,9 +26,18 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     Route::resource('customers', \App\Http\Controllers\CustomerController::class);
-    Route::get('contracts/overdue', [\App\Http\Controllers\ContractController::class, 'overdue'])->name('contracts.overdue');
-    Route::resource('contracts', \App\Http\Controllers\ContractController::class);
-    Route::resource('pawns', \App\Http\Controllers\PawnController::class);
+    Route::get('contracts/overdue', [\App\Http\Controllers\PawnController::class, 'overdue'])->name('contracts.overdue');
+    Route::resource('pawn', \App\Http\Controllers\PawnController::class);
+    Route::resource('installment', InstallmentController::class);
+    Route::controller(InstallmentController::class)->group(function () {
+        Route::get('installment/approved/{id}', 'approved')->name('installment.approved');
+        Route::get('installment/delete/{id}', 'delete')->name('installment.delete');
+
+    });
+    Route::controller(PaymentController::class)->group(function () {
+        Route::post('installment/payment/store/{id}', 'store')->name('payment.store');
+
+    });
     Route::resource('users', \App\Http\Controllers\UserController::class);
 
     Route::get('logs', [\App\Http\Controllers\LogController::class, 'index'])->name('logs.index');;

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->integer('phone');
             $table->string('address')->nullable();
             $table->date('birthday')->nullable();
@@ -24,8 +24,9 @@ return new class extends Migration
             $table->string('id_image_back')->nullable();
             $table->string('image_user')->nullable();
             $table->string('status')->nullable();
-            $table->string('sitiuation');
+            $table->string('sitiuation')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
