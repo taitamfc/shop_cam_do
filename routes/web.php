@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
 
     });
     Route::controller(PaymentController::class)->group(function () {
-        Route::post('payment/store/{id}', 'store')->name('payment.store');
+        Route::post('installment/payment/store/{id}', 'store')->name('payment.store');
 
     });
     Route::resource('users', \App\Http\Controllers\UserController::class);

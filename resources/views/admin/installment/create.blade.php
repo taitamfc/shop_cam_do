@@ -85,13 +85,13 @@
                         <div class="card-body">
                             <div class="row mb-3">
                                 <div class="col-3"><label class="form-label">Tổng tiền vay</label>
-                                    <input type="text" class="form-control" placeholder="Tổng tiền vay" name="total_loan" value="{{ old('total_loan') }}">
+                                    <input type="text" class="form-control"  id="total_loan" placeholder="Tổng tiền vay" name="total_loan" value="{{ old('total_loan') }}">
                                     @error('total_loan')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-3"><label class="form-label">Lãi tổng</label>
-                                    <input type="text" class="form-control" placeholder="Tổng tiền vay" name="interest_rate" value="{{ old('interest_rate') }}">
+                                    <input type="text" class="form-control" id="interest_rate" placeholder="Tổng tiền vay" name="interest_rate" value="{{ old('interest_rate') }}">
                                     @error('interest_rate')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
@@ -109,13 +109,13 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-3"><label class="form-label">Bốc trong vòng/ngày</label>
-                                    <input type="text" class="form-control" placeholder="" name="time_loan" value="{{ old('time_loan') }}">
+                                    <input type="text" class="form-control" id="time_loan" placeholder="" name="time_loan" value="{{ old('time_loan') }}">
                                     @error('time_loan')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-3"><label class="form-label">Kỳ góp</label>
-                                    <input type="text" class="form-control" placeholder="Lãi tổng" name="interest_payment_period" value="{{ old('interest_payment_period') }}">
+                                    <input type="text" class="form-control" placeholder="Lãi tổng" id="interest_payment_period" name="interest_payment_period" value="{{ old('interest_payment_period') }}">
                                     @error('interest_payment_period')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
@@ -133,7 +133,7 @@
                             <div class="row mb-3">
                                 <div class="col">
                                     <label class="form-label">Tiền thu hàng kỳ</label>
-                                    <input type="text" class="form-control" placeholder="" name="monthly_revenue">
+                                    <input type="text" class="form-control" placeholder="" name="monthly_revenue" id="monthly_payment" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Ảnh đính kèm</label>
@@ -154,4 +154,25 @@
             </div>
         </div>
     </form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/autonumeric/4.1.0/autoNumeric.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#total_loan, #interest_rate, #time_loan, #interest_payment_period").on("input", function () {
+            calculateMonthlyPayment();
+        });
+
+        function calculateMonthlyPayment() {
+            var totalLoan = parseFloat($("#total_loan").val().replace(/,/g, '')) || 0;
+            var interestRate = parseFloat($("#interest_rate").val().replace(/,/g, '')) || 0;
+            var timeLoan = parseFloat($("#time_loan").val()) || 0;
+            var interestPaymentPeriod = parseFloat($("#interest_payment_period").val()) || 0;
+
+            var monthlyPayment = (totalLoan + interestRate) / (timeLoan / interestPaymentPeriod) || 0;
+
+            $("#monthly_payment").val(monthlyPayment.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+        }
+    });
+</script>
 @endsection

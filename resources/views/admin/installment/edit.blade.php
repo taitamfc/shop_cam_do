@@ -4,8 +4,9 @@
 <h4 class="py-3 mb-4">
     <span class="text-muted fw-light">Thêm mới /</span><span>Trả góp</span>
 </h4>
-<form action="{{ route('installment.store') }}" method='post' enctype="multipart/form-data">
+<form action="{{ route('installment.update', $item->id) }}" method='post' enctype="multipart/form-data">
     @csrf
+    @method('PUT')
     <div class="app-ecommerce">
 
         <!-- Add Product -->

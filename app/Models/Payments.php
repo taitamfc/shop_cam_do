@@ -17,35 +17,14 @@ class Payments extends Model
         'customer_name',
         'contract_id',
         'user_id',
+        'status',
+        'paid',
+        'payment_day'
     ];
     public $timestamps = true;
 
-    const _DONG_LAI = 0;
-    const _DA_DONG = 1;
-
-    public static function getDescStatus($codeStatus)
-    {
-        try {
-            $codeStatus = intval($codeStatus);
-            $result = "Undefined";
-            switch ($codeStatus) {
-                case self::_DEFAULT: {
-                        $result = "Đóng lãi";
-                        break;
-                    }
-                case self::_DA_DONG: {
-                        $result = "Đã đóng";
-                        break;
-                    }
-                default: {
-                        $result = "Undefined";
-                        break;
-                    }
-            }
-
-            return $result;
-        } catch (Exception $ex) {
-            throw $ex;
-        }
+    public function contact() {
+        return $this->belongsTo(Asset::class,'contact_id','id');
     }
+
 }

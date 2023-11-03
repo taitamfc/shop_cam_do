@@ -15,13 +15,16 @@ class PaymentController extends Controller
         $payment = Payments::findOrFail($id);
 
         try {
-            $payment->update([
-                'paid' => $request->paid,
-                'payment_day' => now(),
-                'status' => PaymentType::PAID
-            ]);
+            $checkPayment = $payment->where('status', PaymentType::UNPAID)->first();
+            if ($checkPayment) {
+                $payment->update([
+                    'paid' => $request->paid,
+                    'payment_day' => now(),
+                    'status' => PaymentType::PAID
+                ]);
+            }
 
-            return response()->json(['success' => true, 'id' => $id]);
+            return response()->json(['success' => true, 'id' => $id, 'payment' => $payment]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return response()->json(['message' => 'Thanh toán thất bại']);

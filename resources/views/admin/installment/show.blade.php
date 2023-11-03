@@ -118,9 +118,10 @@
                             </div>
                         </div>
                         <div class="card-info">
-                            <h6 class="card-title mb-3">Tổng tiền vay: {{$item->total_loan ?? ''}}</h6>
-                            <h6 class="card-title mb-3">Lãi tổng: {{$item->interest_rate ?? ''}}</h6>
+                            <h6 class="card-title mb-3">Tổng tiền vay: {{number_format($item->total_loan) ?? ''}}</h6>
+                            <h6 class="card-title mb-3">Lãi tổng: {{ number_format($item->interest_rate) ?? ''}}</h6>
                             <h6 class="card-title mb-3">Bốc trong vòng/ngày: {{$item->time_loan ?? ''}}</h6>
+                            <h6 class="card-title mb-3">Số tiền còn lại: {{number_format($amountOwed) ?? ''}}</h6>
                         </div>
                     </div>
                 </div>
@@ -135,9 +136,9 @@
                             </div>
                         </div>
                         <div class="card-info">
-                            <h6 class="card-title mb-3">Tiền thu hàng kỳ: {{$item->monthly_revenue ?? ''}}</h6>
-                            <h6 class="card-title mb-3">Kỳ góp: {{$item->interest_payment_period ?? ''}}</h6>
-                            <h6 class="card-title mb-3">Lãi tổng: {{$item->fund->name ?? ''}}</h6>
+                            <h6 class="card-title mb-3">Tiền thu hàng kỳ: {{ number_format($item->monthly_revenue) ?? ''}}</h6>
+                            <h6 class="card-title mb-3">Kỳ góp: {{ number_format($item->interest_payment_period) ?? ''}}</h6>
+                            <h6 class="card-title mb-3">Quỹ: {{$item->fund->name ?? ''}}</h6>
                         </div>
                     </div>
                 </div>
@@ -176,7 +177,7 @@
                                 style="width: 97px;" aria-label="Spent: activate to sort column ascending">Trạng thái
                             </th>
                             <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-                                style="width: 100px;" aria-label="Spent: activate to sort column ascending">Ngày đóng
+                                style="width: 130px;" aria-label="Spent: activate to sort column ascending">Ngày đóng
                             </th>
                             <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
                                 style="width: 97px;" aria-label="Spent: activate to sort column ascending">Chức năng
@@ -189,8 +190,8 @@
                         <tr class="odd">
                             <td>{{ $loop->iteration }}</td>
                             <td class="sorting_1">{{$payment->date_paid}}</td>
-                            <td class="sorting_1">{{$payment->amount}}</td>
-                            <td><span class="text-nowrap">{{$payment->paid ?? ''}}</span></td>
+                            <td class="sorting_1">{{number_format($payment->amount)}}</td>
+                            <td><span class="text-nowrap">{{ number_format($payment->paid) ?? ''}}</span></td>
                             <td>
                                 @if($payment->status == 0)
                                 <span class="badge bg-label-primary" text-capitalized="">Chưa đóng</span>
@@ -278,20 +279,20 @@
                     <h3>Số tiền thanh toán</h3>
                     <h4>{{$payment->amount}}</h4>
                 </div>
-                <form action="{{ route('payment.store', $payment->id)}}" method="post" >
+                <form action="" method="post" >
                     @csrf
                     <div class="row d-flex">
 
                     <div class="col-sm-8">
                         <label class="form-label" for="choosePlan">Nhập số tiền thanh toán</label>
-                        <input type="text" class="form-control" value="{{ old('paid')}}" placeholder="" name="paid">
+                        <input type="number" class="form-control" id="paid{{$payment->id}}"  placeholder="" >
                     </div>
                     <div class="col-sm-4 d-flex align-items-end">
-                        <button type="button" class="btn btn-primary" onclick="confirmPayment()">Thanh toán</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmPayment('{{$payment->id}}')">Thanh toán</button>
                     </div>
                     </div>
                     <div class="col-sm-12">
-                        <p id="payError" style="color: red; display: none;"></p>
+                        <p id="payError{{$payment->id}}" style="color: red;"></p>
                     </div>
                 </form>
             </div>
@@ -299,26 +300,33 @@
     </div>
 </div>
 @endforeach
+<script src=
+        "https://code.jquery.com/jquery-3.4.1.min.js">
+</script>
 <script>
 
-    function confirmPayment() {
-        let paid = $(this).find('input[name="paid"]').val().trim();
-
-        if (!paid) {
-            document.querySelector(`#payError`).textContent = 'Vui lòng nhập số tiền thanh toán';
-            document.querySelector(`#payError`).style.display = 'block';
+    function confirmPayment(id) {
+        let paid = $("#paid"+id).val();
+        console.log(paid)
+        if (paid==='') {
+            document.querySelector(`#payError`+id).textContent = 'Vui lòng nhập số tiền thanh toán';
+            document.querySelector(`#payError`+id).style.display = 'block';
             return; // Dừng việc thực hiện hàm, không gửi AJAX nếu số tiền rỗng
         }
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
         $.ajax({
-            url: $(this).attr('action'),
+            url: 'payment/store/' + id,
             type: 'POST',
-            data: $(this).serialize(),
+            data: {
+                paid: paid,
+                _token: csrfToken // Thêm token CSRF vào dữ liệu gửi đi
+            },
             success: function(response) {
                 console.log(response)
                 if (response.success) {
                     $('#upgradePlanModal'+response.id).modal('hide'); // ví dụ: ẩn modal
-                    window.location.href = '/information';
+                    window.location.reload();
                 } else {
                     $('#passwordError').text(response.message).show();
                 }
