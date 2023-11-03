@@ -57,4 +57,8 @@ Route::middleware('auth')->group(function () {
         Route::get('receivable-debt/index', 'index')->name('receivable-debt.index');
 
     });
+
+    // Thống kê: thu
+    Route::get('statistical/collect', [\App\Http\Controllers\StatisticalController::class, 'collect'])->name('statistical.collect');
+    Route::get('statistical/spend', [\App\Http\Controllers\StatisticalController::class, 'spend'])->name('statistical.spend');
 });
