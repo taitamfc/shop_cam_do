@@ -3,11 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Expense;
+use App\Models\Contract;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        $query = Expense::select('*');
+        // Lấy theo tháng
+        $query->whereBetween(
+            'created_at', 
+            [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]
+        );
+        $thu = $query->where('type',Expense::THU)->sum('amount');
+        $chi = $query->where('type',Expense::CHI)->sum('amount');
+
+        $pawns = Contract::where('contract_type_id',Contract::CAMDO)->limit(5)->latest();
+        $installments = Contract::where('contract_type_id',Contract::TRAGOP)->limit(5)->latest();
+        
+
+        $params = [
+            // Cầm đồ
+            'pawns' => $pawns,
+            // Trả góp
+            'installments' => $installments,
+            // Doanh thu
+            'revenue' => [
+                'collect'   => number_format($thu),
+                'spend'     => number_format($chi),
+                'revenue'     => $thu - $chi,
+            ]
+        ];
+        return view('admin.dashboard',$params);
     }
 }

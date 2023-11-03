@@ -77,7 +77,7 @@ class StatisticalController extends Controller
     private function _chartSpend(){
         $currentYear = date('Y');
         $data = Expense::select(DB::raw("MONTH(created_at) as month"), DB::raw("COALESCE(SUM(amount), 0) as total_amount"))
-            ->where('type','chi')
+            ->where('type',Expense::CHI)
             ->whereYear('created_at', $currentYear)
             ->groupBy('month')
             ->get();
@@ -100,7 +100,7 @@ class StatisticalController extends Controller
     private function _chartCollect(){
         $currentYear = date('Y');
         $data = Expense::select(DB::raw("MONTH(created_at) as month"), DB::raw("COALESCE(SUM(amount), 0) as total_amount"))
-            ->where('type','thu')
+            ->where('type',Expense::THU)
             ->whereYear('created_at', $currentYear)
             ->groupBy('month')
             ->get();
