@@ -25,6 +25,10 @@ class User extends Authenticatable
         'role_id',
     ];
 
+    const SUPPER_ADMIN = 1;
+    const ADMIN = 2;
+    const STAFF = 3;
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -44,4 +48,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getGroupNameAttribute(){
+        switch ($this->group_id) {
+            case self::SUPPER_ADMIN:
+                return 'Quản trị viên';
+                break;
+            case self::ADMIN:
+                return 'Quản lý';
+                break;
+            case self::STAFF:
+                return 'Nhân viên';
+                break;
+            default:
+                return 'Chưa xác định';
+                break;
+        }
+    }
 }

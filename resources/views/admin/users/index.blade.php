@@ -22,9 +22,9 @@
                 <div class="col">
                     <select name="group_id" class="form-select text-capitalize">
                         <option value="">Tất cả</option>
-                        <option value="1">Quản trị viên</option>
-                        <option value="2">Quản lý</option>
-                        <option value="3">Nhân viên</option>
+                        <option @selected( request()->group_id == \App\Models\User::SUPPER_ADMIN ) value="{{ \App\Models\User::SUPPER_ADMIN }}">Quản trị viên</option>
+                        <option @selected( request()->group_id == \App\Models\User::ADMIN ) value="{{ \App\Models\User::ADMIN }}">Quản lý</option>
+                        <option @selected( request()->group_id == \App\Models\User::STAFF ) value="{{ \App\Models\User::STAFF }}">Nhân viên</option>
                     </select>
                 </div>
                 <div class="col-md-1">
@@ -43,9 +43,9 @@
                     <div class="row">
                         <div class="col">
                             <select id="limit" name="limit" class="form-select text-capitalize">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
+                                <option @selected( request()->limit == 10 ) value="10">10</option>
+                                <option @selected( request()->limit == 20 ) value="20">20</option>
+                                <option @selected( request()->limit == 30 ) value="30">30</option>
                             </select>
                         </div>
                         <div class="col">
@@ -100,7 +100,7 @@
                         </td>
                         <td>{{ $item->phone }}</td>
                         <td>{{ $item->address }}</td>
-                        <td>{{ $groups[$item->group_id] }}</td>
+                        <td>{{ $item->group_name }}</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>

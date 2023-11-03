@@ -12,7 +12,7 @@
         <tbody>
             @foreach($pawns as $item)
             <tr>
-                <td><a title="Xem chi tiết" href="{{ route('contracts.edit',$item->id) }}">{{ $item->id }}</a></td>
+                <td><a title="Xem chi tiết" href="{{ route('pawn.edit',$item->id) }}">{{ $item->id }}</a></td>
                 <td>{{ $item->customer_name }}</td>
                 <td>{{ $item->total_loan_fm }}</td>
                 <td>{{ $item->created_at_fm }}</td>
