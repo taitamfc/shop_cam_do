@@ -83,25 +83,35 @@
                 @if($geReceivables)
                 @foreach($geReceivables as $geReceivable)
                 <tr>
-                    <td>{{}}</td>
+                    <td>{{$loop->iteration}}</td>
                     <td>
                         <div class="d-flex">
                             <div class="td-info">
-                                <h6 class="text-body mb-0">{{}}</h6>
+                                <h6 class="text-body mb-0">{{$geReceivable->contract->code}}</h6>
 
                             </div>
                         </div>
                     </td>
 
+                    <td>{{$geReceivable->contract->customer->name}}</td>
+                    <td>{{$geReceivable->contract->total_loan}}</td>
+                    <td>{{$geReceivable->amount}}</td>
                     <td>
-
+                        @if($geReceivable->status == 0)
+                        <span class="badge bg-label-primary" text-capitalized="">Chưa đóng</span>
+                        @elseif($geReceivable->status == 1)
+                        <span class="badge bg-label-success" text-capitalized="">Đã đóng</span>
+                        @else
+                        <span class="badge bg-label-danger" text-capitalized="">Quá hạn</span>
+                        @endif
                     </td>
-                    <td></td>
+                    <td>{{$geReceivable->note}}</td>
                     <td>
-                        <div class="dropdown">
-                            <a class="dropdown-item" href=""><i class="bx bx-edit-alt me-1"></i> Edit</a>
-
-
+                        <div class="dropdown d-flex">
+                            <a class="dropdown-item" href="{{ route('installment.approved', $geReceivable->id) }}">
+                                <i class='bx bxs-check-shield text-success'></i>
+                            </a>
+                            <a class="dropdown-item" href=""><i class="bx bx-edit-alt me-1"></i></a>
                         </div>
 
                     </td>
