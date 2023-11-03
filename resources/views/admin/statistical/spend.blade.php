@@ -49,8 +49,8 @@ use App\Models\Funds;
     <div class="col-sm-6 col-lg-3 mb-4">
         <div class="card card-border-shadow-primary h-100">
             <div class="card-body">
-                <span class="d-block mb-1">TỔNG CHI GỐC</span>
-                <h3 class="card-title text-nowrap mb-2"><?= number_format($chi_cho_vay);?> VND</h3>
+                <span class="d-block mb-1">TỔNG CHI</span>
+                <h3 class="card-title text-nowrap mb-2"><?= number_format($tong_chi);?> VND</h3>
             </div>
         </div>
     </div>
@@ -100,7 +100,7 @@ use App\Models\Funds;
             datasets: [
                 {
                     data: values,
-                    label: "Tổng chi",
+                    label: "Tổng thu",
                     borderColor: config.colors.danger,
                     backgroundColor: config.colors.danger,
                     pointHoverBackgroundColor: config.colors.danger

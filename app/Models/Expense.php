@@ -16,8 +16,9 @@ class Expense extends Model
     const THU_NHAN_VAY = 4;
     const CHI_PHI_KHAC = 24;
     const THANH_LY_TAI_SAN = 16;
-    const THU = 'thu';
-    const CHI = 'chi';
+
+    const CHI = 0;
+    const THU = 1;
 
     protected $fillable = [
         'type',
@@ -52,30 +53,15 @@ class Expense extends Model
         return $this->created_at ? date('d/m/Y H:i',strtotime($this->created_at)) : '';
     }
     public function getTypeNameAttribute(){
-        switch ($this->type_id) {
-            case self::KY_LAI:
-                return 'Kỳ lãi';
+        switch ($this->type) {
+            case self::THU:
+                return 'Thu';
                 break;
-            case self::TAT_TOAN:
-                return 'Tất toán';
-                break;
-            case self::TRA_BOT_GOC:
-                return 'Trả bớt gốc';
-                break;
-            case self::VAY_THEM:
-                return 'Vay thêm';
-                break;
-            case self::CHI_CHO_VAY:
-                return 'Chi cho vay';
-                break;
-            case self::THU_NHAN_VAY:
-                return 'Thu nhận vay';
-                break;
-            case self::CHI_PHI_KHAC:
-                return 'Chi phí khác';
+            case self::CHI:
+                return 'Chi';
                 break;
             default:
-                # code...
+                return 'Chưa xác định';
                 break;
         }
     }
