@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Payments extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'Payments';
+    protected $table = 'payments';
     protected $fillable = [
         'date_paid',
         'amount',
