@@ -1,8 +1,8 @@
 <div class="card h-100">
     <div class="card-header d-flex align-items-center justify-content-between pb-0">
         <div class="card-title mb-0">
-            <h5 class="m-0 me-2">Khác</h5>
-            <small class="text-muted">42.82k Total Sales</small>
+            <h5 class="m-0 me-2">Khách Hàng</h5>
+            <small class="text-muted">{{ $total_khach_hang }}</small>
         </div>
         <div class="dropdown">
             <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

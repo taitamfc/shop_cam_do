@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Expense;
 use App\Models\Contract;
+use App\Models\Customer;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -25,10 +26,12 @@ class HomeController extends Controller
         
         $total_cam_do = Contract::where('type',Contract::CAMDO)->count();
         $total_tra_gop = Contract::where('type',Contract::TRAGOP)->count();
+        $total_khach_hang = Customer::count();
 
         $params = [
             'total_cam_do' => $total_cam_do,
             'total_tra_gop' => $total_tra_gop,
+            'total_khach_hang' => $total_khach_hang,
             // Cầm đồ
             'pawns' => $pawns,
             // Trả góp
