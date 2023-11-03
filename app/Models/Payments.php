@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payments extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'Payments';
     protected $fillable = [
         'date_paid',
@@ -16,35 +17,14 @@ class Payments extends Model
         'customer_name',
         'contract_id',
         'user_id',
+        'status',
+        'paid',
+        'payment_day'
     ];
     public $timestamps = true;
 
-    const _DONG_LAI = 0;
-    const _DA_DONG = 1;
-
-    public static function getDescStatus($codeStatus)
-    {
-        try {
-            $codeStatus = intval($codeStatus);
-            $result = "Undefined";
-            switch ($codeStatus) {
-                case self::_DEFAULT: {
-                        $result = "Đóng lãi";
-                        break;
-                    }
-                case self::_DA_DONG: {
-                        $result = "Đã đóng";
-                        break;
-                    }
-                default: {
-                        $result = "Undefined";
-                        break;
-                    }
-            }
-
-            return $result;
-        } catch (Exception $ex) {
-            throw $ex;
-        }
+    public function contract() {
+        return $this->belongsTo(Contract::class,'contract_id','id');
     }
+
 }

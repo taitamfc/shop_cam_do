@@ -31,13 +31,11 @@ class StatisticalController extends Controller
         if( $request->year ){
             $query->whereYear('created_at',$request->month);
         }
-        $thu_lai = $query->where('type_id',Expense::KY_LAI)->sum('amount');
-        $thu_goc = $query->where('type_id',Expense::TRA_BOT_GOC)->sum('amount');
+        $tong_thu = $query->where('type',Expense::THU)->sum('amount');
         $chartCollect = $this->_chartCollect();
 
         $params = [
-            'thu_lai' => $thu_lai,
-            'thu_goc' => $thu_goc,
+            'tong_thu' => $tong_thu,
             'chart' => [
                 'months' => json_encode($chartCollect['months']),
                 'values' => json_encode($chartCollect['values']),
@@ -61,11 +59,11 @@ class StatisticalController extends Controller
         if( $request->year ){
             $query->whereYear('created_at',$request->month);
         }
-        $chi_cho_vay = $query->where('type_id',Expense::CHI_CHO_VAY)->sum('amount');
+        $tong_chi = $query->where('type',Expense::CHI)->sum('amount');
         $chartSpend = $this->_chartSpend();
 
         $params = [
-            'chi_cho_vay' => $chi_cho_vay,
+            'tong_chi' => $tong_chi,
             'chart' => [
                 'months' => json_encode($chartSpend['months']),
                 'values' => json_encode($chartSpend['values']),
@@ -77,7 +75,7 @@ class StatisticalController extends Controller
     private function _chartSpend(){
         $currentYear = date('Y');
         $data = Expense::select(DB::raw("MONTH(created_at) as month"), DB::raw("COALESCE(SUM(amount), 0) as total_amount"))
-            ->where('type','chi')
+            ->where('type',Expense::CHI)
             ->whereYear('created_at', $currentYear)
             ->groupBy('month')
             ->get();
@@ -100,7 +98,7 @@ class StatisticalController extends Controller
     private function _chartCollect(){
         $currentYear = date('Y');
         $data = Expense::select(DB::raw("MONTH(created_at) as month"), DB::raw("COALESCE(SUM(amount), 0) as total_amount"))
-            ->where('type','thu')
+            ->where('type',Expense::THU)
             ->whereYear('created_at', $currentYear)
             ->groupBy('month')
             ->get();

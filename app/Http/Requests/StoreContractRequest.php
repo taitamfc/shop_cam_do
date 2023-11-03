@@ -29,7 +29,6 @@ class StoreContractRequest extends FormRequest
             'interest_payment_period' => 'required|numeric',
             'interest_rate' => 'required|numeric',
             'date_paid' => 'required',
-            'customer_phone' => 'required|digits:10|unique:contracts',
         ];
     }
     public function messages() {
@@ -48,9 +47,6 @@ class StoreContractRequest extends FormRequest
             'interest_rate.required' => 'Không được để trống trường này',
             'interest_rate.numeric' => 'Bắt buộc phải nhập số',
             'date_paid.required' => 'Không được để trống trường này',
-            'customer_phone.required' => 'Không được để trống trường này',
-            'customer_phone.digits' => 'Số điện thoại không hợp lệ',
-            'customer_phone.unique' => 'Số điện thoại đã tồn tại',
         ];
     }
 }

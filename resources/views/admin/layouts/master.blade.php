@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="{{asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/vendor/libs/typeahead-js/typeahead.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/vendor/libs/apex-charts/apex-charts.css')}}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 	<!-- Page CSS -->
 	<!-- Helpers -->
 	<script src="{{asset('assets/vendor/js/helpers.js')}}"></script>

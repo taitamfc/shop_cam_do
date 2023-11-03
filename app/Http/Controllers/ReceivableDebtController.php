@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\ArrangeType;
 use App\Enums\LoanType;
+use App\Enums\PaymentType;
 use App\Enums\StatusDebt;
 use App\Enums\TimeEnum;
+use App\Models\Contract;
+use App\Models\Payments;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReceivableDebtController extends Controller
@@ -24,12 +28,19 @@ class ReceivableDebtController extends Controller
         $loanType = LoanType::asSelectArray();
         $times = TimeEnum::asSelectArray();
         $status = StatusDebt::asSelectArray();
+        $today = Carbon::now();
+
+        $geReceivables = Payments::with(['contract'])
+                        ->whereIn('status', [PaymentType::UNPAID, PaymentType::OVERDUE])
+                        ->where('date_paid', '<=', $today)
+                        ->get();
 
         $pram = [
             'arrangeType' => $arrangeType,
             'loanType' => $loanType,
             'times' => $times,
             'status' => $status,
+            'geReceivables' => $geReceivables,
         ];
 
 
