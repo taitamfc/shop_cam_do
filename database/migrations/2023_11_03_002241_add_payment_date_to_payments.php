@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('contracts', function (Blueprint $table) {
-            $table->string('total_interest');
-            $table->string('monthly_revenue');
-            $table->string('time_loan');
+        Schema::table('payments', function (Blueprint $table) {
+            $table->date('payment_day')->nullable();
         });
     }
 
@@ -23,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('contracts', function (Blueprint $table) {
-            $table->dropColumn(['total_interest', 'monthly_revenue', 'time_loan']);
+        Schema::table('payments', function (Blueprint $table) {
+            $table->dropColumn('payment_day');
         });
     }
 };

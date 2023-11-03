@@ -5,15 +5,14 @@ namespace App\Http\Controllers;
 use App\Enums\LoanType;
 use App\Enums\PaymentType;
 use App\Enums\StatusLoan;
-use App\Models\Fund;
-use App\Models\Payments;
 use App\Models\Customer;
-use App\Models\AssetType;
 use App\Models\Asset;
 use App\Models\Contract;
+use App\Models\Fund;
 use App\Models\Log as SystemLog;
 use App\Http\Requests\StoreContractRequest;
 use App\Http\Requests\UpdateContractRequest;
+use App\Models\Payments;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -24,19 +23,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class PawnController extends Controller
+class InstallmentController extends Controller
 {
     use UploadFileTrait;
     // Trả góp
     public function index(Request $request)
     {
         $items = Contract::with(['customer', 'asset', 'user', 'payments'])
-            ->where('type', LoanType::PAWN)
+            ->where('type', LoanType::INSTALLMENT)
             ->latest()->get();
         $params = [
             'items' => $items
         ];
-        return view("admin.pawn.index", $params);
+        return view("admin.installment.index", $params);
     }
     public function create()
     {
@@ -48,7 +47,7 @@ class PawnController extends Controller
             'funds' => $funds
         ];
 
-        return view("admin.pawn.create", $param);
+        return view("admin.installment.create", $param);
     }
 
     /**
@@ -99,7 +98,7 @@ class PawnController extends Controller
                 $item->date_paid = Carbon::now();
                 $item->note = $request->note;
                 $item->user_id = Auth::id();
-                $item->type = LoanType::PAWN;
+                $item->type = LoanType::INSTALLMENT;
                 $item->monthly_revenue = $request->monthly_revenue;
                 $item->time_loan = $request->time_loan;
                 $item->status = StatusLoan::PENDING;
@@ -145,7 +144,7 @@ class PawnController extends Controller
     {
         try {
             $item = Contract::with(['customer', 'asset', 'user', 'payments'])
-                ->where('type', LoanType::PAWN)
+                ->where('type', LoanType::INSTALLMENT)
                 ->findOrFail($id);
             $payment = Payments::all();
             $params = [
@@ -153,10 +152,10 @@ class PawnController extends Controller
                 'success' => __('sys.store_item_success'),
                 'payment' => $payment
             ];
-            return view("admin.pawn.show", $params);
+            return view("admin.installment.show", $params);
         } catch (ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return redirect()->route('pawn.index')->with('error', __('sys.store_item_error'));
+            return redirect()->route('installment.index')->with('error', __('sys.store_item_error'));
         }
     }
     public function edit($id)
@@ -171,10 +170,10 @@ class PawnController extends Controller
                 'assets' => $assets,
                 'item' => $item
             ];
-            return view("admin.pawn.edit", $params);
+            return view("admin.installment.edit", $params);
         } catch (ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return redirect()->route('pawn.index')->with('error', __('sys.item_not_found'));
+            return redirect()->route('installment.index')->with('error', __('sys.item_not_found'));
         }
     }
     public function update(UpdateContractRequest $request, $id)
@@ -222,7 +221,7 @@ class PawnController extends Controller
                 $item->date_paid = Carbon::now();
                 $item->note = $request->note;
                 $item->user_id = Auth::id();
-                $item->type = LoanType::PAWN;
+                $item->type = LoanType::INSTALLMENT;
                 $item->monthly_revenue = $request->monthly_revenue;
                 $item->time_loan = $request->time_loan;
                 $item->status = StatusLoan::PENDING;
@@ -253,10 +252,10 @@ class PawnController extends Controller
             }
             DB::commit();
             SystemLog::addLog('Contract', 'store', $item->id);
-            return redirect()->route('pawn.index')->with('success', __('sys.update_item_success'));
+            return redirect()->route('installment.index')->with('success', __('sys.update_item_success'));
         } catch (QueryException $e) {
             Log::error($e->getMessage());
-            return redirect()->route('pawn.index')->with('error', __('sys.update_item_error'));
+            return redirect()->route('installment.index')->with('error', __('sys.update_item_error'));
         }
     }
     public function delete($id)
@@ -265,13 +264,13 @@ class PawnController extends Controller
             $item = Contract::findOrFail($id);
             $item->delete();
             SystemLog::addLog('Contract', 'destroy', $item->id);
-            return redirect()->route('pawn.index')->with('success', __('sys.destroy_item_success'));
+            return redirect()->route('installment.index')->with('success', __('sys.destroy_item_success'));
         } catch (ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return redirect()->route('pawn.index')->with('error', __('sys.item_not_found'));
+            return redirect()->route('installment.index')->with('error', __('sys.item_not_found'));
         } catch (QueryException $e) {
             Log::error($e->getMessage());
-            return redirect()->route('pawn.index')->with('error', __('sys.destroy_item_error'));
+            return redirect()->route('installment.index')->with('error', __('sys.destroy_item_error'));
         }
     }
     public function overdue(Request $request)
@@ -302,7 +301,7 @@ class PawnController extends Controller
         $params = [
             'items' => $items
         ];
-        return view("admin.pawn.overdue", $params);
+        return view("admin.installment.overdue", $params);
     }
 
     public function approved($id)
@@ -325,4 +324,6 @@ class PawnController extends Controller
             return redirect()->back()->with('error', 'Hợp đồng không tồn tại');
         }
     }
+
+
 }

@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contract extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     const CAMDO = 0;
     const TRAGOP = 1;
 
@@ -22,9 +23,14 @@ class Contract extends Model
         'note',
         'image',
         'user_id',
-        'total_interest',
         'monthly_revenue',
         'time_loan',
+        'fund_id',
+        'type',
+        'status',
+        'time_loan',
+        'code',
+
     ];
 
     public $timestamps = true;
@@ -36,6 +42,26 @@ class Contract extends Model
     }
 
     public function asset() {
-        return $this->hasOne(Asset::class,'contract_id','id');
+        return $this->belongsTo(Asset::class,'asset_id','id');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    public function fund()
+    {
+        return $this->belongsTo(Fund::class, 'fund_id', 'id');
+    }
+    public function payments()
+    {
+        return $this->hasMany(Payments::class, 'contract_id', 'id');
+    }
+
+
 }

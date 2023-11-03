@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('total_loan')->nullable();
             $table->string('interest_payment_period')->nullable();
             $table->string('interest_rate')->nullable();
+            $table->string('monthly_revenue');
+            $table->string('time_loan');
+            $table->string('code');
             $table->date('date_paid')->nullable();
             $table->string('note')->nullable();
             $table->string('image')->nullable();
@@ -25,6 +28,7 @@ return new class extends Migration
             $table->string('status')->default('0')->comment('0:pending, 1:approved 2:paid');
             $table->string('type')->default('0')->comment('0:cam do, 1:tra gop');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
